@@ -1,0 +1,79 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://assets/sprites/Sprite-0001.png" type="Texture" id=1]
+[ext_resource path="res://LiliacCangur.gd" type="Script" id=2]
+
+[sub_resource type="Animation" id=1]
+resource_name = "Fly"
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ]
+}
+
+[sub_resource type="CapsuleShape2D" id=2]
+radius = 16.2112
+height = 12.3093
+
+[sub_resource type="CapsuleShape2D" id=3]
+radius = 16.9812
+height = 13.6876
+
+[node name="LiliacCangur" type="KinematicBody2D"]
+position = Vector2( 74.9095, 127.805 )
+scale = Vector2( 2, 2 )
+script = ExtResource( 2 )
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 1 )
+hframes = 11
+frame = 10
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite"]
+autoplay = "Fly"
+anims/Fly = SubResource( 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 2 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true
+limit_top = 0
+limit_bottom = 0
+editor_draw_limits = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer"]
+margin_left = 192.263
+margin_top = 5.93581
+margin_right = 249.263
+margin_bottom = 38.9358
+text = "Score:  0"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="CanvasLayer"]
+visible = false
+margin_left = 185.707
+margin_top = 96.1117
+margin_right = 250.707
+margin_bottom = 136.112
+text = "AI MURIT!"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource( 3 )
+[connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]
