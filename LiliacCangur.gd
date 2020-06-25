@@ -7,13 +7,13 @@ const FLY_FORCE_X = 3000
 var motion = Vector2.ZERO
 
 var jump_input = false
+var is_dead = false
 
 func _ready():
-	pass	
+	is_dead = false
 	
 func _process(delta):
 	$Sprite/AnimationPlayer.play("Fly")
-	
 	$CanvasLayer/RichTextLabel.text = "Score: %d" % (global_position.x / 200)
 	
 func _physics_process(delta):
@@ -28,10 +28,16 @@ func _physics_process(delta):
 	
 	motion = move_and_slide(motion)
 	
-
-
+	
 func _on_Area2D_body_entered(body):
-	if body.name != "LiliacCangur":
-		pass	
-#		get_tree().paused  = true
-#		$CanvasLayer/RichTextLabel2.visible = true
+	if body.name != "LiliacCangur" and not is_dead:
+		get_tree().paused  = true
+		$CanvasLayer/RichTextLabel2.visible = true
+		is_dead = true
+		
+
+
+func _on_VisibilityNotifier2D_screen_exited():
+	get_tree().paused  = true
+	$CanvasLayer/RichTextLabel2.visible = true
+	is_dead = true

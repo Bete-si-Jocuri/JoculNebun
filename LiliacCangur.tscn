@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://assets/sprites/Sprite-0001.png" type="Texture" id=1]
 [ext_resource path="res://LiliacCangur.gd" type="Script" id=2]
+[ext_resource path="res://RichTextLabel2.gd" type="Script" id=3]
 
 [sub_resource type="Animation" id=1]
 resource_name = "Fly"
@@ -27,6 +28,7 @@ radius = 16.9812
 height = 13.6876
 
 [node name="LiliacCangur" type="KinematicBody2D"]
+pause_mode = 1
 position = Vector2( 74.9095, 127.805 )
 scale = Vector2( 2, 2 )
 script = ExtResource( 2 )
@@ -52,22 +54,25 @@ editor_draw_limits = true
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer"]
-margin_left = 192.263
-margin_top = 5.93581
-margin_right = 249.263
-margin_bottom = 38.9358
+margin_left = 204.024
+margin_top = 5.20071
+margin_right = 261.024
+margin_bottom = 38.2007
 text = "Score:  0"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="RichTextLabel2" type="RichTextLabel" parent="CanvasLayer"]
+pause_mode = 2
 visible = false
-margin_left = 185.707
-margin_top = 96.1117
-margin_right = 250.707
-margin_bottom = 136.112
-text = "AI MURIT!"
+margin_left = 198.497
+margin_top = 96.7351
+margin_right = 275.497
+margin_bottom = 172.735
+text = "AI MURIT! 
+Apasa space sa joci iar"
+script = ExtResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -76,4 +81,7 @@ __meta__ = {
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource( 3 )
+
+[node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]
 [connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]
+[connection signal="screen_exited" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_exited"]
