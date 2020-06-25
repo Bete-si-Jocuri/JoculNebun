@@ -1,8 +1,11 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://assets/sprites/Sprite-0001.png" type="Texture" id=1]
 [ext_resource path="res://LiliacCangur.gd" type="Script" id=2]
 [ext_resource path="res://RichTextLabel2.gd" type="Script" id=3]
+[ext_resource path="res://assets/sprites/background.png" type="Texture" id=4]
+[ext_resource path="res://assets/sprites/vignette.png" type="Texture" id=5]
+[ext_resource path="res://assets/sprites/white.png" type="Texture" id=6]
 
 [sub_resource type="Animation" id=1]
 resource_name = "Fly"
@@ -23,7 +26,24 @@ tracks/0/keys = {
 radius = 16.2112
 height = 12.3093
 
-[sub_resource type="CapsuleShape2D" id=3]
+[sub_resource type="Shader" id=3]
+code = "shader_type canvas_item;
+
+uniform sampler2D vignette;
+
+void fragment() {
+	vec3 vignette_color = texture(vignette, UV).rgb;
+	// Screen texture stores gaussian blurred copies on mipmaps.
+	COLOR.rgb = textureLod(SCREEN_TEXTURE, SCREEN_UV, (1.0 - vignette_color.r) * 4.0).rgb;
+	COLOR.rgb *= texture(vignette, UV).rgb;
+}
+"
+
+[sub_resource type="ShaderMaterial" id=4]
+shader = SubResource( 3 )
+shader_param/vignette = ExtResource( 5 )
+
+[sub_resource type="CapsuleShape2D" id=5]
 radius = 16.9812
 height = 13.6876
 
@@ -36,7 +56,7 @@ script = ExtResource( 2 )
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 1 )
 hframes = 11
-frame = 10
+frame = 1
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite"]
 autoplay = "Fly"
@@ -49,15 +69,31 @@ shape = SubResource( 2 )
 current = true
 limit_top = 0
 limit_bottom = 0
-editor_draw_limits = true
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer"]
+material = SubResource( 4 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -176.0
+margin_top = -52.0
+margin_right = 103.0
+margin_bottom = 43.0
+texture = ExtResource( 6 )
+expand = true
+stretch_mode = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer"]
-margin_left = 204.024
-margin_top = 5.20071
-margin_right = 261.024
-margin_bottom = 38.2007
+margin_left = 204.0
+margin_top = 5.0
+margin_right = 272.0
+margin_bottom = 38.0
+grow_horizontal = 2
+grow_vertical = 2
 text = "Score:  0"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -80,8 +116,19 @@ __meta__ = {
 [node name="Area2D" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-shape = SubResource( 3 )
+shape = SubResource( 5 )
 
 [node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_mirroring = Vector2( 1000, 0 )
+
+[node name="Sprite" type="Sprite" parent="ParallaxBackground/ParallaxLayer"]
+position = Vector2( 113.192, 125.421 )
+texture = ExtResource( 4 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 1003.17, 495.687 )
 [connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]
 [connection signal="screen_exited" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_exited"]

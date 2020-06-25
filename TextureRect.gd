@@ -1,4 +1,4 @@
-extends RichTextLabel
+extends TextureRect
 
 
 # Declare member variables here. Examples:
@@ -8,16 +8,11 @@ extends RichTextLabel
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	get_tree().paused = false
+	pass # Replace with function body.
 
 func _process(_delta):
-	if get_tree().get_root().get_child(0).get_child(0).is_dead and (Input.is_action_just_pressed("ui_accept") or Input.is_action_just_pressed("left_mouse")):
-		get_tree().reload_current_scene()
-
-
-		
-		
-
+	pass
+	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
