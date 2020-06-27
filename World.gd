@@ -19,10 +19,11 @@ func _process(_delta):
 		var stalp_1 = stalp.instance()
 		var stalp_2 = stalp.instance()
 		
-		var h1 = randi() % (50 + 50 + 1) - 50
+		var h1 = randi() % (70 + 65 + 1) - 65
+		var h2 = randi() % (280 - 230 + 1) + 230
 
 		stalp_1.set_position(Vector2(last_position + 400, h1))
-		stalp_2.set_position(Vector2(last_position + 400, h1 + 260))
+		stalp_2.set_position(Vector2(last_position + 400, h1 + h2))
 		stalp_2.global_rotation = 0
 		add_child(stalp_1)
 		add_child(stalp_2)
